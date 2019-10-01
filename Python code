@@ -1,0 +1,137 @@
+import math
+import random
+
+#variaveis
+sair = 1
+mensagemcrip = " "
+mensagemdescrip = " "
+primook = False
+menuprinc = 0
+
+
+MMI = lambda A, n,s=1,t=0,N=0: (n < 2 and t%N or MMI(n, A%n, t, s-A//n*t, N or n),-1)[n<1]
+
+#criação do menu
+while (menuprinc != 3):
+    print ("1 - criptografar")
+    print ("2 - descriptografar")
+    print ("3 - sair")
+
+    menuprinc = int(input("Escolha a ação desejada: "))
+
+    if (menuprinc == 1): #codificação da mensagem
+        #seleciona os numeros primos
+
+        def Primo(num):#seleciona os dois numeros primos
+            cont = 0
+            for i in range(1,num):
+                if(num%i == 0):
+                    cont = cont + 1
+            if(cont <= 2):
+                return num
+
+        primos = [i for i in range(10,100) if Primo(i)]
+        p = random.choice(primos)
+        q = random.choice(primos)
+
+        while ((q == p) or (q == 0)):
+            q = random.choice(primos)
+
+            
+        #define n e phiN
+        n = p*q
+        phiN = (p-1) * (q-1)
+
+
+        #recebe e
+        while primook == False:
+            def condE():
+                listE = []
+                tempE = 0
+                if (tempE == 0):
+                    listE = [i for i in range(10,100) if Primo(i)]
+                    tempE = random.choice(listE)
+                    while(phiN % int(tempE) == 0):
+                        tempE = random.choice(listE)
+                return tempE
+            e = condE()
+            if(phiN % e == 0):
+                print(e)
+                print("numero invalido")
+                primook = False
+            else:
+                primook = True
+
+
+        #calcula iverso multiplicativo de e mod phiN
+        d = MMI(e,phiN)
+
+        #mostra os resultados
+        print("*")
+        print("chaves calculadas com sucesso")
+        print("chaves publicas - N = ",n," E = ",e)
+        print("chaves privadas - P = ",p," Q = ",q," D = ",d)
+        print("*")
+
+        print("_______________________________")
+        pre = input("escreva a menssagem: ")
+        print("")
+        precode = [ord(c) for c in pre]
+
+        print("________________________")
+        print("a menssagem em ASCII é: ",)
+        print(precode)
+        print("")
+
+        #criptografa a menssagem
+        for i in range(0, len(precode)):
+            blococoderes = ((precode[i]**e)%n)# pega o ASC e tranforma em RSA
+            blococodetemp = str(blococoderes)#salve em string
+            mensagemcrip += " " + blococodetemp#junta tds os resultado em uma só variavel
+
+
+        #mostra a menssagem criptografada
+        print("_____________________________________")
+        print("menssagem criptografada com sucesso: ")
+        print(mensagemcrip)
+        print("")
+        print("_____________________________________")
+
+
+    
+    else:
+        if (menuprinc == 2):#faz a descriptografia
+
+            #pede as variaveis P, Q e D para que possa ser feita a conta
+            #não utiliza as variaveis já criada para que possa descriptografar qualquer tipo de RSA(desde que vc tenha essas 3 variaveis)
+            print("")
+            print("_____________________________")
+            p = int(input("digite a valor de P: "))
+            q = int(input("digite a valor de Q: "))
+            d = int(input("digite a valor de D: "))
+            n = p*q
+
+            #pega os blocos de RSA codificados para a decodificação
+            print("________________________________________________________________")
+            print("insira os blocos da menssagem codificada divididas por espaços: ")
+            print("Exemplo: 150 190 2088")
+            print("")
+            print("_____________________________")
+            mensagem = input("Insira os blocos: ")
+            decode = mensagem.split(' ')
+
+
+            #faz a descriptografia
+            for i in range(0, len(decode)):
+                blocodecode = ((int(decode[i])**d)%n)#converte RSA em ASCII
+                letra = chr(blocodecode)#converte ASCII em letras
+                mensagemdescrip += letra#junta as letras para formar a mensagem
+
+                
+            #mostra a mensgem descriptografada
+            print("______________________________________")
+            print("menssagem descriptografada com sucesso:")
+            print("")
+            print(mensagemdescrip)
+            print("")
+            print("______________________________________")
