@@ -11,7 +11,7 @@ menuprinc = 0
 
 MMI = lambda A, n,s=1,t=0,N=0: (n < 2 and t%N or MMI(n, A%n, t, s-A//n*t, N or n),-1)[n<1]
 
-#criação do menu
+#menu
 while (menuprinc != 3):
     print ("1 - criptografar")
     print ("2 - descriptografar")
@@ -19,10 +19,10 @@ while (menuprinc != 3):
 
     menuprinc = int(input("Escolha a ação desejada: "))
 
-    if (menuprinc == 1): #codificação da mensagem
-        #seleciona os numeros primos
+    if (menuprinc == 1): #menssage codify
+        #select two prime numbers
 
-        def Primo(num):#seleciona os dois numeros primos
+        def Primo(num):
             cont = 0
             for i in range(1,num):
                 if(num%i == 0):
@@ -43,7 +43,7 @@ while (menuprinc != 3):
         phiN = (p-1) * (q-1)
 
 
-        #recebe e
+        #get e
         while primook == False:
             def condE():
                 listE = []
@@ -62,11 +62,9 @@ while (menuprinc != 3):
             else:
                 primook = True
 
-
-        #calcula iverso multiplicativo de e mod phiN
         d = MMI(e,phiN)
 
-        #mostra os resultados
+        #print the results
         print("*")
         print("chaves calculadas com sucesso")
         print("chaves publicas - N = ",n," E = ",e)
@@ -83,14 +81,14 @@ while (menuprinc != 3):
         print(precode)
         print("")
 
-        #criptografa a menssagem
+        #encrypt the message
         for i in range(0, len(precode)):
             blococoderes = ((precode[i]**e)%n)# pega o ASC e tranforma em RSA
             blococodetemp = str(blococoderes)#salve em string
             mensagemcrip += " " + blococodetemp#junta tds os resultado em uma só variavel
 
 
-        #mostra a menssagem criptografada
+        #print the encrypt message
         print("_____________________________________")
         print("menssagem criptografada com sucesso: ")
         print(mensagemcrip)
@@ -100,10 +98,8 @@ while (menuprinc != 3):
 
     
     else:
-        if (menuprinc == 2):#faz a descriptografia
-
-            #pede as variaveis P, Q e D para que possa ser feita a conta
-            #não utiliza as variaveis já criada para que possa descriptografar qualquer tipo de RSA(desde que vc tenha essas 3 variaveis)
+        if (menuprinc == 2):#decrypts
+        
             print("")
             print("_____________________________")
             p = int(input("digite a valor de P: "))
@@ -111,7 +107,7 @@ while (menuprinc != 3):
             d = int(input("digite a valor de D: "))
             n = p*q
 
-            #pega os blocos de RSA codificados para a decodificação
+            #get the encript message and prepare to decrypts that
             print("________________________________________________________________")
             print("insira os blocos da menssagem codificada divididas por espaços: ")
             print("Exemplo: 150 190 2088")
@@ -121,14 +117,14 @@ while (menuprinc != 3):
             decode = mensagem.split(' ')
 
 
-            #faz a descriptografia
+            #do the decrypt
             for i in range(0, len(decode)):
                 blocodecode = ((int(decode[i])**d)%n)#converte RSA em ASCII
                 letra = chr(blocodecode)#converte ASCII em letras
                 mensagemdescrip += letra#junta as letras para formar a mensagem
 
                 
-            #mostra a mensgem descriptografada
+            #print the decript message
             print("______________________________________")
             print("menssagem descriptografada com sucesso:")
             print("")
